@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 关键：防止手机端页面被缩放，保证体验 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    <title>扫码查询</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            padding: 40px 20px; 
+            text-align: center; 
+            background-color: #f5f5f5; 
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h2 { color: #333; margin-bottom: 30px; font-size: 22px; }
+        
+        /* 适配手机端的输入框和按钮 */
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { 
+            flex: 1; 
+            padding: 14px; 
+            font-size: 18px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            outline: none; 
+        }
+        input:focus { border-color: #07c160; }
+        
+        button { 
+            padding: 14px 24px; 
+            font-size: 18px; 
+            border: none; 
+            background-color: #07c160; /* 微信绿 */
+            color: white; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: opacity 0.2s;
+        }
+        button:active { opacity: 0.8; } 
+        
+        /* 结果展示区 */
+        #result { 
+            margin-top: 30px; 
+            font-size: 48px; /* 超大字号，方便查看 */
+            font-weight: bold; 
+            min-height: 60px;
+            line-height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>请输入查询码</h2>
+    
+    <div class="input-group">
+        <input type="text" id="keyInput" placeholder="例如: a" autocomplete="off">
+        <button onclick="query()">查询</button>
+    </div>
+    
+    <p id="result"></p>
+</div>
+
+<script>
+    // 👇 你的核心映射数据，直接写在这里即可
+    const dataMap = {
+        'a': 10,
+        'b': 20,
+        'c': 30
+    };
+
+    function query() {
+        const key = document.getElementById('keyInput').value.trim().toLowerCase();
+        const resultEl = document.getElementById('result');
+        
+        if (!key) {
+            resultEl.innerText = '';
+            return;
+        }
+
+        // 判断 key 是否存在于 Map 中
+        if (key in dataMap) {
+            resultEl.innerText = dataMap[key];
+            resultEl.style.color = '#333';
+        } else {
+            resultEl.innerText = '未找到该数据';
+            resultEl.style.color = '#ff4d4f';
+        }
+    }
+
+    // 监听回车键，方便测试
+    document.getElementById('keyInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') query();
+    });
+</script>
+</body>
+</html>
